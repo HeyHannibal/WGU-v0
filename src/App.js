@@ -1,23 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
-
+import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import Input from './components/input'
+import Output from './components2/output';
+import MuiButton from './components2/muiButton';
 function App() {
+  const [toRender, setToRender] = useState([])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Input setToRender={setToRender}></Input>
+    <Output toRender={toRender}></Output>
+    <MuiButton></MuiButton>
     </div>
   );
 }
