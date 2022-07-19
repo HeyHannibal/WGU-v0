@@ -14,13 +14,7 @@ const virtualDom = {
             id: "top",
           },
 
-          children: [
-            {
-              Element: {
-                tagName: "span",
-              },
-            },
-          ],
+          children: [{ textContent: "Hello World" }],
         },
       },
       {
@@ -37,6 +31,11 @@ const virtualDom = {
                       props: {
                         id: "ck",
                       },
+                      children: [
+                        {
+                          textContent: "Text",
+                        },
+                      ],
                     },
                   },
                 ],
@@ -50,23 +49,23 @@ const virtualDom = {
 };
 
 let addProps = (elem) => (elem.props !== undefined ? elem.props : {});
-console.log(
-  addProps({
-    props: {
-      aaa: "aaa",
-    },
-  })
-);
+
 function traverseVirtualDom(virtualDom) {
   const thisLayer = Object.keys(virtualDom);
   return thisLayer.map((key) => {
     const elem = virtualDom[key];
     if (elem.children === undefined) {
       return React.createElement(elem.tagName, addProps(elem));
+    } else if (Object.keys(elem.children[0])[0] === "textContent") {
+      return React.createElement(
+        elem.tagName,
+        addProps(elem),
+        elem.children[0].textContent
+      );
     } else {
       return React.createElement(
         elem.tagName,
-        {},
+        addProps(elem),
         traverseChildNodes(elem.children)
       );
     }
