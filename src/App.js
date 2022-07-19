@@ -11,8 +11,7 @@ function App() {
   return (
     <div className="App">
     <Input setToRender={setToRender}></Input>
-    <Output toRender={toRender}></Output>
-    <MuiButton></MuiButton>
+    <Output></Output>
     </div>
   );
 }
