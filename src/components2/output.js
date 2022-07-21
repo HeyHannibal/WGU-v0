@@ -1,5 +1,6 @@
-import React from "react";
-import MuiButton from "./muiButton";
+import produce from "immer";
+import React, { useState, useCallback } from "react";
+
 const virtualDom = {
   Element: {
     tagName: "div",
@@ -33,7 +34,7 @@ const virtualDom = {
                       },
                       children: [
                         {
-                          textContent: "Text",
+                          textContent: "Just Tell ME what to DO PLEASE",
                         },
                       ],
                     },
@@ -82,7 +83,9 @@ function traverseChildNodes(virtualDom) {
 }
 
 export default function Output(props) {
-  return <div>{traverseVirtualDom(virtualDom)}</div>;
+  const [dom, setDom] = useState(virtualDom);
+
+  return <div id="work">{traverseVirtualDom(dom)}</div>;
 }
 
 // return keys.map((elem) => {

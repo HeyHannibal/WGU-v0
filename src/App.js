@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import Input from './components/input'
+import Input from './components2/input'
 import Output from './components2/output';
 import MuiButton from './components2/muiButton';
 function App() {
@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="App">
-    <Input setToRender={setToRender}></Input>
+    <Input></Input>
     <Output></Output>
     </div>
   );
