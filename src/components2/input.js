@@ -101,20 +101,39 @@ let vrDom = {
   },
 };
 
+
+
+
+
 export default function Input() {
   const [Dom, setDom] = useState(vrDom);
 
+
+
+  
   const renderTree = (dom, isChild) => {
+    
     const offset = () =>
       isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" };
+
+    const hasChildren = (dom) => {
+      if(dom.Element.children === undefined || dom.Element.children.length === 0) {
+        return false 
+      }
+      if(dom.Element.children !== undefined && Object.keys(dom.Element.children[0])[0] !== "textContent") {
+       return true 
+      }
+    }
+
     return (
       <div className="node" style={offset()} key={dom.Element.treeRef}>
         <Grid container alignItems="center" justifyContent="space-around">
           <p>{dom.Element.tagName}</p>
           <ClearIcon onClick={() => deleteFromState(dom.Element.treeRef)} />
         </Grid>
-        {dom.Element.children !== undefined &&
-        Object.keys(dom.Element.children[0])[0] !== "textContent"
+        {
+        
+        (hasChildren(dom))
           ? dom.Element.children.map((dom) => renderTree(dom, true))
           : null}
       </div>
@@ -135,10 +154,10 @@ export default function Input() {
     const keys = Object.keys(node);
     const key = keys[0];
     if (node[key].treeRef === targetId) {
-      console.log(parent.Element.children);
       let newArr = parent.Element.children.filter(
         (child) => child.Element.treeRef !== targetId
       );
+      console.log(newArr)
       parent.Element.children = newArr;
     } else {
       if (Array.isArray(node[key].children) && node[key].children.length > 0) {
@@ -166,7 +185,10 @@ export default function Input() {
 //       style={{position:'relative'}}
 //     >
 //       <span style={{position:'absolute', 'top':'1px'}} onClick={() => del(dom)}>d</span>
-
+//
+//dom.Element.children !== undefined &&
+//        Object.keys(dom.Element.children[0])[0] !== "textContent"
+//        && dom.Element.children.length > 0
 //       {dom.Element.children !== undefined &&
 //       Object.keys(dom.Element.children[0])[0] !== "textContent"
 //         ? dom.Element.children.map((dom) => renderTree(dom))
