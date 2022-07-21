@@ -5,6 +5,9 @@ import uniqid from "uniqid";
 
 import { Grid } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+
+import Output from "./output";
 
 let vrDom = {
   Element: {
@@ -58,7 +61,6 @@ let vrDom = {
                 props: {
                   id: "top",
                 },
-
                 children: [{ textContent: "Hello World" }],
               },
             },
@@ -101,47 +103,21 @@ let vrDom = {
   },
 };
 
-
-
-
+let addMe = {
+  Element: {
+    treeRef: uniqid(),
+    tagName: "h1",
+    props: {
+      id: "top",
+    },
+    children: [{ textContent: "it works, sort of" }],
+  },
+};
 
 export default function Input() {
   const [Dom, setDom] = useState(vrDom);
 
-
-
-  
-  const renderTree = (dom, isChild) => {
-    
-    const offset = () =>
-      isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" };
-
-    const hasChildren = (dom) => {
-      if(dom.Element.children === undefined || dom.Element.children.length === 0) {
-        return false 
-      }
-      if(dom.Element.children !== undefined && Object.keys(dom.Element.children[0])[0] !== "textContent") {
-       return true 
-      }
-    }
-
-    return (
-      <div className="node" style={offset()} key={dom.Element.treeRef}>
-        <Grid container alignItems="center" justifyContent="space-around">
-          <p>{dom.Element.tagName}</p>
-          <ClearIcon onClick={() => deleteFromState(dom.Element.treeRef)} />
-        </Grid>
-        {
-        
-        (hasChildren(dom))
-          ? dom.Element.children.map((dom) => renderTree(dom, true))
-          : null}
-      </div>
-    );
-  };
-
-  const deleteFromState = useCallback((targetId) => {
-    console.log(targetId);
+  const deleteNodeFromState = useCallback((targetId) => {
     setDom(
       produce((draft) => {
         deleteNode(draft, targetId);
@@ -149,21 +125,68 @@ export default function Input() {
     );
   }, []);
 
-  function deleteNode(node, targetId, parent) {
-    console.log(node);
+  const addNodeToState = useCallback((targetId) => {
+    setDom(
+      produce((draft) => {
+        addNode(draft, targetId);
+      })
+    );
+  }, []);
+
+  const renderTree = (dom, isChild) => {
+    console.log(dom);
+    const { Element } = dom;
+    const offset = () => (isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" });
+
+    const hasChildren = () => {
+      const { children } = Element;
+      if (children === undefined || children.length === 0) return false;
+      if (children !== undefined && Object.keys(children[0])[0] !== "textContent")
+        return true;
+    };
+
+    return (
+      <div className="node" style={offset()} key={Element.treeRef}>
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="space-around"
+          flexWrap="nowrap"
+        >
+          <p>{Element.tagName}</p>
+          {/* <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} /> */}
+          <AddCircleOutlineOutlinedIcon onClick={() => addNodeToState(Element.treeRef)} />
+        </Grid>
+        {hasChildren(dom) ? Element.children.map((dom) => renderTree(dom, true)) : null}
+      </div>
+    );
+  };
+
+  function addNode(node, targetId) {
     const keys = Object.keys(node);
     const key = keys[0];
     if (node[key].treeRef === targetId) {
+      let newArr = [...node.Element.children, addMe];
+      node.Element.children = newArr;
+    } else {
+      if (Array.isArray(node[key].children) && node[key].children.length > 0) {
+        node[key].children.forEach((child) => addNode(child, targetId));
+      }
+    }
+  }
+
+  function deleteNode(node, targetId, parent) {
+    const keys = Object.keys(node);
+    const key = keys[0];
+    if (node[key].treeRef === targetId) {
+      // filter the array with id from function call
       let newArr = parent.Element.children.filter(
         (child) => child.Element.treeRef !== targetId
       );
-      console.log(newArr)
       parent.Element.children = newArr;
     } else {
       if (Array.isArray(node[key].children) && node[key].children.length > 0) {
-        node[key].children.forEach((child) =>
-          deleteNode(child, targetId, node)
-        );
+        node[key].children.forEach((child) => deleteNode(child, targetId, node));
       }
     }
   }
@@ -171,42 +194,7 @@ export default function Input() {
   return (
     <div onClick={() => console.log(Dom)} id="domTree">
       {renderTree(Dom)}
+      <Output dom={Dom} />
     </div>
   );
 }
-
-// let count = 0;
-// const renderTree = (dom) => {
-//   count++;
-//   return (
-//     <TreeItem
-//       nodeId={count.toString()}
-//       label={dom.Element.tagName}
-//       style={{position:'relative'}}
-//     >
-//       <span style={{position:'absolute', 'top':'1px'}} onClick={() => del(dom)}>d</span>
-//
-//dom.Element.children !== undefined &&
-//        Object.keys(dom.Element.children[0])[0] !== "textContent"
-//        && dom.Element.children.length > 0
-//       {dom.Element.children !== undefined &&
-//       Object.keys(dom.Element.children[0])[0] !== "textContent"
-//         ? dom.Element.children.map((dom) => renderTree(dom))
-//         : null}
-//     </TreeItem>
-//   );
-// };
-
-// return (
-//   <div onClick={() => console.log(virtualDom)}>
-//     <TreeView>{renderTree(virtualDom)}</TreeView>
-//   </div>
-// );
-
-// const changeDom = useCallback(() => {
-//   setDom(
-//     produce((draft) => {
-//       draft.Element.props.id = "hi";
-//     })
-//   );
-// }, []);

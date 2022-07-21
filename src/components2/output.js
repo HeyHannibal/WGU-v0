@@ -58,7 +58,6 @@ const virtualDom = {
           ],
         },
       },
-      
     ],
   },
 };
@@ -97,9 +96,7 @@ function traverseChildNodes(virtualDom) {
 }
 
 export default function Output(props) {
-  const [dom, setDom] = useState(virtualDom);
-
-  return <div id="work">{traverseVirtualDom(dom)}</div>;
+  return <div id="work">{traverseVirtualDom(props.dom)}</div>;
 }
 
 // return keys.map((elem) => {

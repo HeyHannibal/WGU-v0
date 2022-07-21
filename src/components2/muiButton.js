@@ -15,16 +15,13 @@ export default function MuiButton(props) {
   const { TextField, Select, MenuItem, Button } = Mui;
   return (
     <>
-      <Select
-        defaultValue={"contained"}
-        onChange={(e) => setVariant(e.target.value)}
-      >
+      <Select defaultValue={"contained"} onChange={(e) => setVariant(e.target.value)}>
         <MenuItem value="contained">contained</MenuItem>
         <MenuItem value="text">text</MenuItem>
         <MenuItem value="outlined">outlined</MenuItem>
       </Select>
       <TextField onChange={handleText} />
-      <Button variant={variant}>{textContent}</Button> 
+      <Button variant={variant}>{textContent}</Button>
     </>
   );
 }
