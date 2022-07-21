@@ -25,9 +25,12 @@
   margin-left: 0;
   padding: 0 2rem;
   background-color: white;
-  width: 10%;
+  width: 25%;
+  box-sizing: border-box;
 }
-
+.node{
+  width: 100%;
+}
 /* position: absolute; */
 /* left: 50%; */
 /* top: 50%; */

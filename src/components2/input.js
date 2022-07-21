@@ -1,13 +1,14 @@
 import { useState, useCallback } from "react";
 import produce from "immer";
-import { TreeItem } from "@mui/lab";
-import { TreeView } from "@mui/lab";
 
-import ClearIcon from '@mui/icons-material/Clear';
-const virtualDom = {
+import uniqid from "uniqid";
+
+import { Grid } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+
+let vrDom = {
   Element: {
-    findMe: this,
-
+    treeRef: uniqid(),
     tagName: "div",
     props: {
       id: "Output",
@@ -15,6 +16,16 @@ const virtualDom = {
     children: [
       {
         Element: {
+          treeRef: uniqid(),
+          tagName: "h2",
+          props: {
+            id: "top",
+          },
+        },
+      },
+      {
+        Element: {
+          treeRef: uniqid(),
           tagName: "h1",
           nodeId: "2",
           props: {
@@ -26,23 +37,58 @@ const virtualDom = {
       },
       {
         Element: {
-          tagName: "div",
+          treeRef: uniqid(),
+          tagName: "section",
+
           children: [
             {
               Element: {
-                tagName: "p",
+                treeRef: uniqid(),
+                tagName: "h2",
+                props: {
+                  id: "top",
+                },
+              },
+            },
+            {
+              Element: {
+                treeRef: uniqid(),
+                tagName: "h1",
+                nodeId: "2",
+                props: {
+                  id: "top",
+                },
+
+                children: [{ textContent: "Hello World" }],
+              },
+            },
+            {
+              Element: {
+                treeRef: uniqid(),
+                tagName: "div",
+                props: {
+                  id: "Output",
+                },
                 children: [
                   {
                     Element: {
-                      tagName: "span",
+                      treeRef: uniqid(),
+                      tagName: "h2",
                       props: {
-                        id: "ck",
+                        id: "top",
                       },
-                      children: [
-                        {
-                          textContent: "Just Tell ME what to DO PLEASE",
-                        },
-                      ],
+                    },
+                  },
+                  {
+                    Element: {
+                      treeRef: uniqid(),
+                      tagName: "h1",
+                      nodeId: "2",
+                      props: {
+                        id: "top",
+                      },
+
+                      children: [{ textContent: "Hello World" }],
                     },
                   },
                 ],
@@ -51,42 +97,22 @@ const virtualDom = {
           ],
         },
       },
-      {
-        Element: {
-          tagName: "h1",
-          nodeId: "2",
-          props: {
-            id: "top",
-          },
-
-          children: [{ textContent: "Hello World" }],
-        },
-      },
     ],
   },
 };
 
-const del = (elem) => delete elem.Element;
-
 export default function Input() {
-  const [Dom, setDom] = useState(virtualDom);
-
-  const changeDom = useCallback(() => {
-    setDom(
-      produce((draft) => {
-        draft.Element.props.id = "hi";
-      })
-    );
-  }, []);
+  const [Dom, setDom] = useState(vrDom);
 
   const renderTree = (dom, isChild) => {
-    const offset = () => isChild ?  {marginLeft: '10px' } : {marginLeft: '-2px' } 
+    const offset = () =>
+      isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" };
     return (
-      <div className="node" style={offset()}>
-        <div style={{display:'flex'}}>
+      <div className="node" style={offset()} key={dom.Element.treeRef}>
+        <Grid container alignItems="center" justifyContent="space-around">
           <p>{dom.Element.tagName}</p>
-          <ClearIcon/>
-        </div>
+          <ClearIcon onClick={() => deleteFromState(dom.Element.treeRef)} />
+        </Grid>
         {dom.Element.children !== undefined &&
         Object.keys(dom.Element.children[0])[0] !== "textContent"
           ? dom.Element.children.map((dom) => renderTree(dom, true))
@@ -95,7 +121,39 @@ export default function Input() {
     );
   };
 
-  return <div id='domTree'>{renderTree(virtualDom)}</div>;
+  const deleteFromState = useCallback((targetId) => {
+    console.log(targetId);
+    setDom(
+      produce((draft) => {
+        deleteNode(draft, targetId);
+      })
+    );
+  }, []);
+
+  function deleteNode(node, targetId, parent) {
+    console.log(node);
+    const keys = Object.keys(node);
+    const key = keys[0];
+    if (node[key].treeRef === targetId) {
+      console.log(parent.Element.children);
+      let newArr = parent.Element.children.filter(
+        (child) => child.Element.treeRef !== targetId
+      );
+      parent.Element.children = newArr;
+    } else {
+      if (Array.isArray(node[key].children) && node[key].children.length > 0) {
+        node[key].children.forEach((child) =>
+          deleteNode(child, targetId, node)
+        );
+      }
+    }
+  }
+
+  return (
+    <div onClick={() => console.log(Dom)} id="domTree">
+      {renderTree(Dom)}
+    </div>
+  );
 }
 
 // let count = 0;
@@ -122,3 +180,11 @@ export default function Input() {
 //     <TreeView>{renderTree(virtualDom)}</TreeView>
 //   </div>
 // );
+
+// const changeDom = useCallback(() => {
+//   setDom(
+//     produce((draft) => {
+//       draft.Element.props.id = "hi";
+//     })
+//   );
+// }, []);

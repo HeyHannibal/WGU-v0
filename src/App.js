@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
     <Input></Input>
-    <Output></Output>
+    {/* <Output></Output> */}
     </div>
   );
 }

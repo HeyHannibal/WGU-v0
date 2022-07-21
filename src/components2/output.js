@@ -3,6 +3,8 @@ import React, { useState, useCallback } from "react";
 
 const virtualDom = {
   Element: {
+    findMe: this,
+
     tagName: "div",
     props: {
       id: "Output",
@@ -10,7 +12,18 @@ const virtualDom = {
     children: [
       {
         Element: {
+          tagName: "h2",
+          props: {
+            id: "top",
+          },
+
+          children: [{ textContent: "Hello World" }],
+        },
+      },
+      {
+        Element: {
           tagName: "h1",
+          nodeId: "2",
           props: {
             id: "top",
           },
@@ -45,6 +58,7 @@ const virtualDom = {
           ],
         },
       },
+      
     ],
   },
 };
