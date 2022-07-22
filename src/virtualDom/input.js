@@ -7,102 +7,6 @@ import { Grid } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
-import Output from "./output";
-
-let vrDom = {
-  Element: {
-    treeRef: uniqid(),
-    tagName: "div",
-    props: {
-      id: "Output",
-    },
-    children: [
-      {
-        Element: {
-          treeRef: uniqid(),
-          tagName: "h2",
-          props: {
-            id: "top",
-          },
-        },
-      },
-      {
-        Element: {
-          treeRef: uniqid(),
-          tagName: "h1",
-          nodeId: "2",
-          props: {
-            id: "top",
-          },
-
-          children: [{ textContent: "Hello World" }],
-        },
-      },
-      {
-        Element: {
-          treeRef: uniqid(),
-          tagName: "section",
-
-          children: [
-            {
-              Element: {
-                treeRef: uniqid(),
-                tagName: "h2",
-                props: {
-                  id: "top",
-                },
-              },
-            },
-            {
-              Element: {
-                treeRef: uniqid(),
-                tagName: "h1",
-                nodeId: "2",
-                props: {
-                  id: "top",
-                },
-                children: [{ textContent: "Hello World" }],
-              },
-            },
-            {
-              Element: {
-                treeRef: uniqid(),
-                tagName: "div",
-                props: {
-                  id: "Output",
-                },
-                children: [
-                  {
-                    Element: {
-                      treeRef: uniqid(),
-                      tagName: "h2",
-                      props: {
-                        id: "top",
-                      },
-                    },
-                  },
-                  {
-                    Element: {
-                      treeRef: uniqid(),
-                      tagName: "h1",
-                      nodeId: "2",
-                      props: {
-                        id: "top",
-                      },
-
-                      children: [{ textContent: "Hello World" }],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      },
-    ],
-  },
-};
-
 let addMe = {
   Element: {
     treeRef: uniqid(),
@@ -114,8 +18,8 @@ let addMe = {
   },
 };
 
-export default function Input() {
-  const [Dom, setDom] = useState(vrDom);
+export default function Input(props) {
+  const { Dom, setDom } = props;
 
   const deleteNodeFromState = useCallback((targetId) => {
     setDom(
@@ -134,7 +38,6 @@ export default function Input() {
   }, []);
 
   const renderTree = (dom, isChild) => {
-    console.log(dom);
     const { Element } = dom;
     const offset = () => (isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" });
 
@@ -154,7 +57,7 @@ export default function Input() {
           flexWrap="nowrap"
         >
           <p>{Element.tagName}</p>
-          {/* <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} /> */}
+          <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
           <AddCircleOutlineOutlinedIcon onClick={() => addNodeToState(Element.treeRef)} />
         </Grid>
         {hasChildren(dom) ? Element.children.map((dom) => renderTree(dom, true)) : null}
@@ -191,10 +94,5 @@ export default function Input() {
     }
   }
 
-  return (
-    <div onClick={() => console.log(Dom)} id="domTree">
-      {renderTree(Dom)}
-      <Output dom={Dom} />
-    </div>
-  );
+  return <div id="domTree">{renderTree(Dom)}</div>;
 }
