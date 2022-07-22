@@ -21,7 +21,6 @@ export let vrDom = {
         Element: {
           treeRef: uniqid(),
           tagName: "h1",
-          nodeId: "2",
           props: {
             key: uniqid(),
           },
@@ -32,7 +31,7 @@ export let vrDom = {
       {
         Element: {
           treeRef: uniqid(),
-          tagName: "section",
+          tagName: "div",
 
           children: [
             {

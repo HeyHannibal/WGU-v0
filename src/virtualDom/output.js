@@ -1,7 +1,19 @@
 import produce from "immer";
 import React, { useState, useCallback } from "react";
-
+import TextWrapper from "../elemWrappers/textWrapper";
 let addProps = (elem) => (elem.props !== undefined ? elem.props : {});
+
+const wrappedText = (textElem) => {
+  return React.createElement(
+    TextWrapper,
+    {},
+    React.createElement(
+      textElem.tagName,
+      addProps(textElem),
+      textElem.children[0].textContent
+    )
+  );
+};
 
 function renderVirtualDom(virtualDom) {
   const thisLayer = Object.keys(virtualDom);
@@ -13,11 +25,12 @@ function renderVirtualDom(virtualDom) {
       elem.children.length > 0 &&
       Object.keys(elem.children[0])[0] === "textContent"
     ) {
-      return React.createElement(
-        elem.tagName,
-        addProps(elem),
-        elem.children[0].textContent
-      );
+      // return React.createElement(
+      //   elem.tagName,
+      //   addProps(elem),
+      //   elem.children[0].textContent
+      // );
+      return wrappedText(elem);
     } else {
       return React.createElement(
         elem.tagName,
