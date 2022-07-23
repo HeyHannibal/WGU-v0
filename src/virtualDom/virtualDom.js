@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import produce from "immer";
 import uniqid from "uniqid";
 import Input from "./input";
@@ -6,15 +6,25 @@ import Output from "./output";
 import PickElement from "./pickElement";
 import { vrDom } from "./domObj";
 import Element from "./domElements";
+import TextEditor from "./textEditor";
+import { Button } from "@mui/material";
+
 export default function VirtualDom() {
   const [Dom, setDom] = useState(vrDom);
 
   const [activeElement, setActiveElement] = useState("div");
 
+  const [selectedTextId, setSelectedTextId] = useState();
+  const [selectedTextNode, setSelectedTextNode] = useState();
+
+  useEffect(() => {
+    setSelectedTextNode(findNode(Dom, selectedTextId));
+  }, [selectedTextId]);
+
   const deleteNodeFromState = useCallback((targetId) => {
     setDom(
       produce((draft) => {
-        deleteNode(draft, targetId);
+        console.log(deleteNode(draft, targetId));
       })
     );
   }, []);
@@ -30,12 +40,20 @@ export default function VirtualDom() {
     [activeElement]
   );
 
-  const hasChildren = (element) => {
-    const { children } = Element;
-    if (children === undefined || children.length === 0) return false;
-    if (children !== undefined && Object.keys(children[0])[0] !== "textContent")
-      return true;
-  };
+  // const updateTextNode = useCallback(
+  //   (nodeId) => {
+  //     setDom(
+  //       produce((draft) => {
+  //         findNode(draft, nodeId, changeText);
+  //       })
+  //     );
+  //   },
+  //   [selectedTextId]
+  // );
+
+  // useEffect(() => {
+  //   updateTextNode(selectedTextId);
+  // }, [selectedTextId]);
 
   function addNode(node, targetId, element) {
     const keys = Object.keys(node);
@@ -65,13 +83,40 @@ export default function VirtualDom() {
       }
     }
   }
+
+  function findNode(node, nodeId) {
+    const elem = node.Element;
+    if (elem.treeRef === nodeId) {
+      return elem;
+    } else if (
+      Array.isArray(elem.children) &&
+      elem.children.length > 0 &&
+      elem.tagName !== "p"
+    ) {
+      for (let i = 0; i < elem.children.length; i++) {
+        const theNode = findNode(elem.children[i], nodeId);
+        if (theNode !== undefined) {
+          return theNode;
+        }
+      }
+    }
+  }
+
   const props = { deleteNodeFromState, addNodeToState, Dom };
   return (
     <>
       <PickElement activeElement={activeElement} setActiveElement={setActiveElement} />
       <div id="workspace">
         <Input {...props} />
-        <Output Dom={Dom} />
+        <Output Dom={Dom} setSelectedTextId={setSelectedTextId} />
+        {selectedTextId ? (
+          <TextEditor
+            findNode={findNode}
+            setDom={setDom}
+            Dom={Dom}
+            target={selectedTextId}
+          />
+        ) : null}
       </div>
     </>
   );

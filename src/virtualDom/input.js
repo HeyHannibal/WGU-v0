@@ -26,10 +26,10 @@ export default function Input(props) {
         <Grid
           container
           alignItems="center"
-          justifyContent="space-around"
+          justifyContent="space-between"
           flexWrap="nowrap"
         >
-          <p>{Element.tagName}</p>
+          <p style={{ marginRight: "auto" }}>{Element.tagName}</p>
           <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
           {Element.tagName === "div" ? (
             <AddCircleOutlineOutlinedIcon

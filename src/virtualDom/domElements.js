@@ -13,19 +13,3 @@ export default function Element(tag, prop, child) {
 
   return { Element: { tagName, treeRef, props, children } };
 }
-
-// const numbers = {
-//   numA: 5,
-//   numB: 10,
-
-//   sum: function () {
-//     console.log(this);
-
-//     function calc() {
-//       console.log(this);
-//       return this.numA + this.numB;
-//     }
-//     return calc();
-//   },
-// };
-// numbers.sum();

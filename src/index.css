@@ -1,16 +1,16 @@
 html {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
 }
 body {
   margin: 0;
-  font-family: 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  font-family: "Fira Sans", "Droid Sans", "Helvetica Neue";
   height: 100vh;
   width: 100%;
   background-color: rgb(216, 226, 228);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
