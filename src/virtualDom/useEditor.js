@@ -2,16 +2,29 @@ import { useState, useEffect, useCallback } from "react";
 import produce from "immer";
 
 export default function useEditor(Dom, setDom, findNode, target) {
-  const text = useCallback(
+  const editText = useCallback(
     (value) => {
       setDom(
         produce((draft) => {
-          const nodetochange = findNode(draft, target);
-          nodetochange.children[0].textContent = value;
+          const node = findNode(draft, target);
+          node.children[0].textContent = value;
         })
       );
     },
     [target]
   );
-  return { text };
+
+  const editStyle = useCallback(
+    (prop, value) => {
+      setDom(
+        produce((draft) => {
+          const node = findNode(draft, target);
+          node.style[prop] = value;
+        })
+      );
+    },
+    [target]
+  );
+
+  return { editText, editStyle };
 }

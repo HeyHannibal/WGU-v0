@@ -14,16 +14,22 @@ export default function Output(props) {
           elem.tagName,
           {
             ...addProps(elem),
+            style: elem.style,
+
             onClick: () => {
               setSelectedTextId(elem.treeRef);
             },
           },
-          elem.children[0].textContent + "   ----" + elem.treeRef
+          elem.children[0].textContent
+          //+ "   ----" + elem.treeRef
         );
       } else {
         return React.createElement(
           elem.tagName,
-          addProps(elem),
+          {
+            ...addProps(elem),
+            style: elem.style,
+          },
           renderChildNodes(elem.children)
         );
       }

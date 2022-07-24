@@ -7,6 +7,7 @@ export let vrDom = {
       key: uniqid(),
       id: "Output",
     },
+    style: {},
     children: [
       // {
       //   Element: {

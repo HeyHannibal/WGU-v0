@@ -8,7 +8,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 export default function Input(props) {
-  const { Dom, deleteNodeFromState, addNodeToState } = props;
+  const { Dom, deleteNodeFromState, addNodeToState, findParentNode } = props;
 
   const renderTree = (dom, isChild) => {
     const { Element } = dom;
@@ -30,7 +30,11 @@ export default function Input(props) {
           flexWrap="nowrap"
         >
           <p style={{ marginRight: "auto" }}>{Element.tagName}</p>
-          <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
+          {Element.props.id !== "Output" ? (
+            <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
+          ) : null}
+          {/* <ClearIcon onClick={() => findParentNode(Dom, Element.treeRef)} /> */}
+
           {Element.tagName === "div" ? (
             <AddCircleOutlineOutlinedIcon
               onClick={() => addNodeToState(Element.treeRef)}

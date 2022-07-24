@@ -19,6 +19,7 @@
     rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
   background-color: rgb(255, 255, 255);
   transition: transform 0.2s ease;
+  padding: 1rem;
 }
 
 #domTree {
