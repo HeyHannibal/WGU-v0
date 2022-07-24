@@ -18,7 +18,7 @@ export default function Output(props) {
               setSelectedTextId(elem.treeRef);
             },
           },
-          elem.children[0].textContent + elem.treeRef
+          elem.children[0].textContent + "   ----" + elem.treeRef
         );
       } else {
         return React.createElement(

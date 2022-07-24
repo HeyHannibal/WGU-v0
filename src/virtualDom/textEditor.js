@@ -8,18 +8,21 @@ export default function TextEditor(props) {
   const { Dom, setDom, findNode, target } = props;
 
   const { text } = useEditor(Dom, setDom, findNode, target);
+
+  const textNode = findNode(Dom, target);
+
   return (
     <div id="editor">
-      {/* <TextField
+      <TextField
         hiddenLabel
         id="filled-hidden-label-small"
         defaultValue="Small"
         variant="filled"
         size="small"
-         onChange={(e) => text(e.target.value)}
-         value={textObject.children[0].textContent}
-      /> */}
-      <button onClick={() => text("well")}></button>
+        onChange={(e) => text(e.target.value)}
+        value={textNode.children[0].textContent}
+      />
+      <button onClick={() => text(Math.random())}></button>
     </div>
   );
 }

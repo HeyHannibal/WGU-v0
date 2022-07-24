@@ -15,11 +15,11 @@ export default function VirtualDom() {
   const [activeElement, setActiveElement] = useState("div");
 
   const [selectedTextId, setSelectedTextId] = useState();
-  const [selectedTextNode, setSelectedTextNode] = useState();
+  // const [selectedTextNode, setSelectedTextNode] = useState();
 
-  useEffect(() => {
-    setSelectedTextNode(findNode(Dom, selectedTextId));
-  }, [selectedTextId]);
+  // useEffect(() => {
+  //   setSelectedTextNode(findNode(Dom, selectedTextId));
+  // }, [selectedTextId]);
 
   const deleteNodeFromState = useCallback((targetId) => {
     setDom(
@@ -73,6 +73,7 @@ export default function VirtualDom() {
     const key = keys[0];
     if (node[key].treeRef === targetId) {
       // filter the array with id from function call
+      setSelectedTextId(false); // so that editor doesn't try access non existing node
       let newArr = parent.Element.children.filter(
         (child) => child.Element.treeRef !== targetId
       );
@@ -103,6 +104,7 @@ export default function VirtualDom() {
   }
 
   const props = { deleteNodeFromState, addNodeToState, Dom };
+
   return (
     <>
       <PickElement activeElement={activeElement} setActiveElement={setActiveElement} />
