@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WGU-v0/static/css/main.ec1bdb93.css",
+    "main.js": "/WGU-v0/static/js/main.ca284a6f.js",
+    "static/js/787.7efd31bd.chunk.js": "/WGU-v0/static/js/787.7efd31bd.chunk.js",
+    "index.html": "/WGU-v0/index.html",
+    "main.ec1bdb93.css.map": "/WGU-v0/static/css/main.ec1bdb93.css.map",
+    "main.ca284a6f.js.map": "/WGU-v0/static/js/main.ca284a6f.js.map",
+    "787.7efd31bd.chunk.js.map": "/WGU-v0/static/js/787.7efd31bd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec1bdb93.css",
+    "static/js/main.ca284a6f.js"
+  ]
+}
