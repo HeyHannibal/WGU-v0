@@ -6,17 +6,17 @@ import Output from "./output";
 import PickElement from "./pickElement";
 import { vrDom } from "./domObj";
 import Element from "./domElements";
-import TextEditor from "./textEditor";
+import TextEditor from "../Editor/components/textEditor";
 
 export default function VirtualDom() {
   const [Dom, setDom] = useState(vrDom);
   const [activeElement, setActiveElement] = useState("p");
-  const [selectedTextId, setSelectedTextId] = useState();
+  const [selectedElement, setSelectedElement] = useState();
 
   const deleteNodeFromState = useCallback((targetId) => {
     setDom(
       produce((draft) => {
-        setSelectedTextId(false); // so that the editor doesn't try to access deleted element
+        setSelectedElement(false); // so that the editor doesn't try to access deleted element
         const targetNode = findParentNode(draft, targetId);
         const filtered = targetNode.children.filter(
           (child) => child.Element.treeRef !== targetId
@@ -82,13 +82,13 @@ export default function VirtualDom() {
       <PickElement activeElement={activeElement} setActiveElement={setActiveElement} />
       <div id="workspace">
         <Input {...props} />
-        <Output Dom={Dom} setSelectedTextId={setSelectedTextId} />
-        {selectedTextId ? (
+        <Output Dom={Dom} setSelectedElement={setSelectedElement} />
+        {selectedElement ? (
           <TextEditor
             findNode={findNode}
             setDom={setDom}
             Dom={Dom}
-            target={selectedTextId}
+            target={selectedElement.ref}
           />
         ) : null}
       </div>
@@ -134,9 +134,9 @@ export default function VirtualDom() {
 //       })
 //     );
 //   },
-//   [selectedTextId]
+//   [selectedElement]
 // );
 
 // useEffect(() => {
-//   updateTextNode(selectedTextId);
-// }, [selectedTextId]);
+//   updateTextNode(selectedElement);
+// }, [selectedElement]);

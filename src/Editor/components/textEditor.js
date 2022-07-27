@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import produce from "immer";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
-import useEditor from "./useEditor";
+import useEditor from "../useEditor";
 
 export default function TextEditor(props) {
   const { Dom, setDom, findNode, target } = props;

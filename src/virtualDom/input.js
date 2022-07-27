@@ -33,9 +33,7 @@ export default function Input(props) {
           {Element.props.id !== "Output" ? (
             <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
           ) : null}
-          {/* <ClearIcon onClick={() => findParentNode(Dom, Element.treeRef)} /> */}
-
-          {Element.tagName === "div" ? (
+          {Element.tagName === "div" || Element.tagName === "main" ? (
             <AddCircleOutlineOutlinedIcon
               onClick={() => addNodeToState(Element.treeRef)}
             />

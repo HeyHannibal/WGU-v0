@@ -1,37 +1,61 @@
 import React, { useState, useCallback } from "react";
 
-let addProps = (elem) => (elem.props !== undefined ? elem.props : {});
-
 export default function Output(props) {
-  const { Dom, setSelectedTextId } = props;
+  const { Dom, setSelectedElement } = props;
+
+  const elementArguments = (elem) => {
+    const element = elem.tagName;
+    const props = {
+      ...elem["props"],
+      style: elem.style,
+      onClick: (e) => {
+        e.stopPropagation();
+        setSelectedElement({
+          type: elem.tagName,
+          ref: elem.treeRef,
+        });
+      },
+    };
+    const children = elem.children[0].textContent;
+    return [element, props, children];
+  };
+
+  const renderText = (elem) => {
+    return React.createElement(...elementArguments(elem));
+  };
+
+  const renderDiv = (elem) => {
+    const click = () => {
+      return elem.tagName === "main"
+        ? null
+        : setSelectedElement({
+            type: elem.tagName,
+            ref: elem.treeRef,
+          });
+    };
+
+    return React.createElement(
+      elem.tagName,
+      {
+        ...elem["props"],
+        onClick: (e) => {
+          e.stopPropagation();
+          click();
+        },
+        style: elem.style,
+      },
+      renderChildNodes(elem.children)
+    );
+  };
 
   function renderVirtualDom(virtualDom) {
     const element = [virtualDom.Element];
-
+    // checking for children  elem.children.length > 0 &&??
     return element.map((elem) => {
-      if (elem.children.length > 0 && elem.tagName === "p") {
-        return React.createElement(
-          elem.tagName,
-          {
-            ...addProps(elem),
-            style: elem.style,
-
-            onClick: () => {
-              setSelectedTextId(elem.treeRef);
-            },
-          },
-          elem.children[0].textContent
-          //+ "   ----" + elem.treeRef
-        );
-      } else {
-        return React.createElement(
-          elem.tagName,
-          {
-            ...addProps(elem),
-            style: elem.style,
-          },
-          renderChildNodes(elem.children)
-        );
+      if (elem.tagName === "p") {
+        return renderText(elem);
+      } else if (elem.tagName === "div" || elem.tagName === "main") {
+        return renderDiv(elem);
       }
     });
   }
@@ -41,16 +65,9 @@ export default function Output(props) {
       if (elem.Element.children !== undefined) {
         return renderVirtualDom(elem);
       }
-      return React.createElement(elem.Element.tagName, addProps(elem.Element));
+      return React.createElement(elem.Element.tagName, elem.Element.props);
     });
   }
 
-  return <div id="work">{renderVirtualDom(Dom, setSelectedTextId)}</div>;
+  return <div id="work">{renderVirtualDom(Dom, setSelectedElement)}</div>;
 }
-
-// return keys.map((elem) => {
-// return React.createElement(elem, {},Object.keys(virtualDom[elem]).map(elemm => {
-// if(elemm === 'comp') React.createElement(MuiButton)
-// else return React.createElement(elemm,{}, virtualDom[elem][elemm].textContent)
-// }));
-// });
