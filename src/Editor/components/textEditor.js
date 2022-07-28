@@ -7,12 +7,12 @@ import useEditor from "../useEditor";
 export default function TextEditor(props) {
   const { Dom, setDom, findNode, target } = props;
 
-  const { editText, editStyle } = useEditor(Dom, setDom, findNode, target);
+  const { editText, editStyle } = useEditor(Dom, setDom, findNode, target.ref);
 
-  const textNode = findNode(Dom, target);
+  const textNode = findNode(Dom, target.ref);
 
   return (
-    <div id="editor" style={{ display: "flex", flexDirection: "column" }}>
+    <div id="editor">
       <TextField
         id="outlined-size-small"
         size="small"

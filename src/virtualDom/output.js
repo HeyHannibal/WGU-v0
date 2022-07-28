@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 
 export default function Output(props) {
-  const { Dom, setSelectedElement } = props;
+  const { Dom, setElementToEdit } = props;
 
   const elementArguments = (elem) => {
     const element = elem.tagName;
@@ -10,7 +10,7 @@ export default function Output(props) {
       style: elem.style,
       onClick: (e) => {
         e.stopPropagation();
-        setSelectedElement({
+        setElementToEdit({
           type: elem.tagName,
           ref: elem.treeRef,
         });
@@ -28,7 +28,7 @@ export default function Output(props) {
     const click = () => {
       return elem.tagName === "main"
         ? null
-        : setSelectedElement({
+        : setElementToEdit({
             type: elem.tagName,
             ref: elem.treeRef,
           });
@@ -69,5 +69,5 @@ export default function Output(props) {
     });
   }
 
-  return <div id="work">{renderVirtualDom(Dom, setSelectedElement)}</div>;
+  return <div id="work">{renderVirtualDom(Dom, setElementToEdit)}</div>;
 }

@@ -6,17 +6,19 @@ import Output from "./output";
 import PickElement from "./pickElement";
 import { vrDom } from "./domObj";
 import Element from "./domElements";
+
 import TextEditor from "../Editor/components/textEditor";
+import DivEditor from "../Editor/components/divEditor";
 
 export default function VirtualDom() {
   const [Dom, setDom] = useState(vrDom);
   const [activeElement, setActiveElement] = useState("p");
-  const [selectedElement, setSelectedElement] = useState();
+  const [elementToEdit, setElementToEdit] = useState();
 
   const deleteNodeFromState = useCallback((targetId) => {
     setDom(
       produce((draft) => {
-        setSelectedElement(false); // so that the editor doesn't try to access deleted element
+        setElementToEdit(false); // so that the editor doesn't try to access deleted element
         const targetNode = findParentNode(draft, targetId);
         const filtered = targetNode.children.filter(
           (child) => child.Element.treeRef !== targetId
@@ -77,20 +79,25 @@ export default function VirtualDom() {
 
   const props = { deleteNodeFromState, addNodeToState, Dom, findParentNode };
 
+  const editorProps = { findNode, setDom, Dom, target: elementToEdit };
+
+  const editors = {
+    p: <TextEditor {...editorProps} />,
+    div: <DivEditor {...editorProps} />,
+  };
+
+  function selectEditor(elementToEdit) {
+    if (elementToEdit === undefined) return;
+    return editors[elementToEdit.type];
+  }
+
   return (
     <>
       <PickElement activeElement={activeElement} setActiveElement={setActiveElement} />
       <div id="workspace">
         <Input {...props} />
-        <Output Dom={Dom} setSelectedElement={setSelectedElement} />
-        {selectedElement ? (
-          <TextEditor
-            findNode={findNode}
-            setDom={setDom}
-            Dom={Dom}
-            target={selectedElement.ref}
-          />
-        ) : null}
+        <Output Dom={Dom} setElementToEdit={setElementToEdit} />
+        {selectEditor(elementToEdit)}
       </div>
     </>
   );
@@ -134,9 +141,9 @@ export default function VirtualDom() {
 //       })
 //     );
 //   },
-//   [selectedElement]
+//   [elementToEdit]
 // );
 
 // useEffect(() => {
-//   updateTextNode(selectedElement);
-// }, [selectedElement]);
+//   updateTextNode(elementToEdit);
+// }, [elementToEdit]);
