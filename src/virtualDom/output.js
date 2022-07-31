@@ -1,7 +1,12 @@
 import React, { useState, useCallback } from "react";
+import Draggable from "react-draggable";
 
 export default function Output(props) {
   const { Dom, setElementToEdit } = props;
+
+  function createDraggable(createElem) {
+    return <Draggable>{createElem}</Draggable>;
+  }
 
   const elementArguments = (elem) => {
     const element = elem.tagName;
@@ -54,7 +59,11 @@ export default function Output(props) {
     return element.map((elem) => {
       if (elem.tagName === "p") {
         return renderText(elem);
-      } else if (elem.tagName === "div" || elem.tagName === "main") {
+        // return createDraggable(renderText(elem));
+      } else if (elem.tagName === "div") {
+        // return createDraggable(renderDiv(elem));
+        return renderDiv(elem);
+      } else if (elem.tagName === "main") {
         return renderDiv(elem);
       }
     });

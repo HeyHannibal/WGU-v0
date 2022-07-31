@@ -3,6 +3,7 @@ import produce from "immer";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import useEditor from "../useEditor";
+import Draggable from "react-draggable";
 
 export default function TextEditor(props) {
   const { Dom, setDom, findNode, target } = props;
@@ -30,6 +31,7 @@ export default function TextEditor(props) {
       <Button size="small" onClick={() => editStyle("fontWeight", "bolder")}>
         Bold
       </Button>
+
       <input
         type="color"
         value={textNode.style.color ? textNode.style.color : "#4c00ff"}

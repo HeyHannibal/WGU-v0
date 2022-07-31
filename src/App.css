@@ -73,7 +73,19 @@
   border: 1px solid transparent;
 }
 
-#Output p:hover,
-#Output div:hover {
+#Output p:hover {
   border: 1px solid #4eabde;
+}
+
+#Output div:hover {
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ffffff 0,
+    #0084ff94 1px,
+    #ffffff 0,
+    #ffffff 50%
+  );
 }
