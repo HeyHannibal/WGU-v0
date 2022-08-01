@@ -10,7 +10,7 @@
 /lgc
 # production
 /build
-
+bbin.js
 # misc
 .DS_Store
 .env.local

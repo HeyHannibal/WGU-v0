@@ -1,6 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import produce from "immer";
-import uniqid from "uniqid";
 import Input from "./input";
 import Output from "./output";
 import PickElement from "./pickElement";
@@ -32,7 +31,6 @@ export default function VirtualDom() {
     (targetId) => {
       setDom(
         produce((draft) => {
-          console.log("call");
           const targetNode = findNode(draft, targetId);
           targetNode.children.push(Element(activeElement));
         })
@@ -102,48 +100,3 @@ export default function VirtualDom() {
     </>
   );
 }
-
-// | old way of  updating nodes
-
-// function addNode(node, targetId, element) {
-//   const keys = Object.keys(node);
-//   const key = keys[0];
-//   if (node[key].treeRef === targetId) {
-//     let newArr = [...node.Element.children, element];
-//     node.Element.children = newArr;
-//   } else {
-//     if (Array.isArray(node[key].children) && node[key].children.length > 0) {
-//       node[key].children.forEach((child) => addNode(child, targetId, element));
-//     }
-//   }
-// }
-
-//function deleteNode(node, targetId, parent) {
-//  const keys = Object.keys(node);
-//  const key = keys[0];
-//  if (node[key].treeRef === targetId) {
-//    let newArr = parent.Element.children.filter(
-//      (child) => child.Element.treeRef !== targetId
-//    );
-//    parent.Element.children = newArr;
-//  } else {
-//    if (Array.isArray(node[key].children) && node[key].children.length > 0) {
-//      node[key].children.forEach((child) => deleteNode(child, targetId, node));
-//    }
-//  }
-//}
-
-// const updateTextNode = useCallback(
-//   (nodeId) => {
-//     setDom(
-//       produce((draft) => {
-//         findNode(draft, nodeId, changeText);
-//       })
-//     );
-//   },
-//   [elementToEdit]
-// );
-
-// useEffect(() => {
-//   updateTextNode(elementToEdit);
-// }, [elementToEdit]);

@@ -1,9 +1,3 @@
-import { useState, useCallback } from "react";
-import produce from "immer";
-
-import uniqid from "uniqid";
-
-import { Grid } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
@@ -12,34 +6,28 @@ export default function Input(props) {
 
   const renderTree = (dom, isChild) => {
     const { Element } = dom;
+    const { tagName, children, treeRef } = Element;
+
     const offset = () => (isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" });
 
     const hasChildren = () => {
-      const { children } = Element;
       if (children === undefined || children.length === 0) return false;
-      if (children !== undefined && Object.keys(children[0])[0] !== "textContent")
-        return true;
+      else if (Object.keys(children[0])[0] !== "textContent") return true;
+    };
+
+    const icons = {
+      delete: (ref) => <ClearIcon onClick={() => deleteNodeFromState(ref)} />,
+      add: (ref) => <AddCircleOutlineOutlinedIcon onClick={() => addNodeToState(ref)} />,
     };
 
     return (
-      <div className="node" style={offset()} key={Element.treeRef}>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="space-between"
-          flexWrap="nowrap"
-        >
-          <p style={{ marginRight: "auto" }}>{Element.tagName}</p>
-          {Element.props.id !== "Output" ? (
-            <ClearIcon onClick={() => deleteNodeFromState(Element.treeRef)} />
-          ) : null}
-          {Element.tagName === "div" || Element.tagName === "main" ? (
-            <AddCircleOutlineOutlinedIcon
-              onClick={() => addNodeToState(Element.treeRef)}
-            />
-          ) : null}
-        </Grid>
-        {hasChildren(dom) ? Element.children.map((dom) => renderTree(dom, true)) : null}
+      <div className="node" style={offset()} key={treeRef}>
+        <div className="nodeContent">
+          <p>{tagName}</p>
+          {tagName !== "main" ? icons.delete(treeRef) : null}
+          {tagName === "div" || tagName === "main" ? icons.add(treeRef) : null}
+        </div>
+        {hasChildren(dom) ? children.map((dom) => renderTree(dom, true)) : null}
       </div>
     );
   };

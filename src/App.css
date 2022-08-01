@@ -27,11 +27,20 @@
   margin-left: 0;
   padding: 2rem 4rem 2rem 1rem;
   background-color: white;
-  width: 25%;
+  width: 20%;
+  max-width: 300px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 .node {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.nodeContent {
+  display: flex;
+  align-items: center;
 }
 
 #workspace {
