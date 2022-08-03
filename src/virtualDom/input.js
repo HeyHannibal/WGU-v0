@@ -1,5 +1,6 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import "../style/input.css";
 
 export default function Input(props) {
   const { Dom, deleteNodeFromState, addNodeToState, findParentNode } = props;
@@ -10,10 +11,10 @@ export default function Input(props) {
 
     const offset = () => (isChild ? { marginLeft: "10px" } : { marginLeft: "-2px" });
 
-    const hasChildren = () => {
+    const hasChildren = (function () {
       if (children === undefined || children.length === 0) return false;
       else if (Object.keys(children[0])[0] !== "textContent") return true;
-    };
+    })(dom);
 
     const icons = {
       delete: (ref) => <ClearIcon onClick={() => deleteNodeFromState(ref)} />,
@@ -22,12 +23,12 @@ export default function Input(props) {
 
     return (
       <div className="node" style={offset()} key={treeRef}>
-        <div className="nodeContent">
-          <p>{tagName}</p>
-          {tagName !== "main" ? icons.delete(treeRef) : null}
+        <div style={offset()} className={`nodeContent ${hasChildren ? "parent" : ""}`}>
+          <p style={offset()}> {tagName}</p>
           {tagName === "div" || tagName === "main" ? icons.add(treeRef) : null}
+          {tagName !== "main" ? icons.delete(treeRef) : null}
         </div>
-        {hasChildren(dom) ? children.map((dom) => renderTree(dom, true)) : null}
+        {hasChildren ? children.map((dom) => renderTree(dom, true)) : null}
       </div>
     );
   };

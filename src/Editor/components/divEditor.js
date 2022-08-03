@@ -6,13 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 
-export default function TextEditor(props) {
+export default function DivEditor(props) {
   const { Dom, setDom, findNode, target } = props;
 
   const { editStyle } = useEditor(Dom, setDom, findNode, target.ref);
 
   const divNode = findNode(Dom, target.ref);
-  console.log(divNode);
   return (
     <div id="editor">
       <TextField
