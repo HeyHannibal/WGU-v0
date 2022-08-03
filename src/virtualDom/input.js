@@ -17,7 +17,11 @@ export default function Input(props) {
     })(dom);
 
     const icons = {
-      delete: (ref) => <ClearIcon onClick={() => deleteNodeFromState(ref)} />,
+      delete: (ref) => (
+        <span className="material-symbols-sharp" onClick={() => deleteNodeFromState(ref)}>
+          add_circle
+        </span>
+      ),
       add: (ref) => <AddCircleOutlineOutlinedIcon onClick={() => addNodeToState(ref)} />,
     };
 

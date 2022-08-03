@@ -5,21 +5,8 @@ import Toolbar from "@mui/material/Toolbar";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-
-const theme = createTheme({
-  components: {
-    palette: {
-      primary: {
-        main: "#white",
-        darker: "#053e85",
-      },
-      action: {
-        main: "#blue",
-        contrastText: "#fff",
-      },
-    },
-  },
-});
+import Icon from "@mui/material/Icon";
+import blue from "@mui/material/colors/blue";
 
 export default function PickElement(props) {
   const { activeElement, setActiveElement } = props;
@@ -27,17 +14,27 @@ export default function PickElement(props) {
   return (
     <ThemeProvider theme={theme}>
       <Toolbar id="toolbar">
-        <CropSquareSharpIcon
-          color={activeElement === "div" ? "primary" : "action"}
-          fontSize="large"
+        <Icon
+          color="primary"
+          baseClassName="material-symbols-sharp"
           onClick={() => setActiveElement("div")}
-        />
-        <TextFieldsIcon
-          color={activeElement === "p" ? "primary" : "action"}
-          fontSize="large"
+        >
+          check_box_outline_blank
+        </Icon>
+
+        <Icon
           onClick={() => setActiveElement("p")}
-        />
+          baseClassName="material-symbols-sharp"
+        >
+          text_fields
+        </Icon>
       </Toolbar>
     </ThemeProvider>
   );
 }
+
+//  <CropSquareSharpIcon
+// color={activeElement === "div" ? "#fff" : "#fff"}
+// fontSize="large"
+//
+// />
