@@ -11,11 +11,30 @@ import blue from "@mui/material/colors/blue";
 export default function PickElement(props) {
   const { activeElement, setActiveElement } = props;
 
+  const isActive = (tagName) => {
+    return tagName === activeElement ? { color: "#0084ff" } : { color: "#fff" };
+  };
+
+  const theme = createTheme({
+    components: {
+      // Name of the component
+      MuiIcon: {
+        styleOverrides: {
+          // Name of the slot
+          root: {
+            // Some CSS
+            fontSize: "2rem",
+          },
+        },
+      },
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Toolbar id="toolbar">
         <Icon
-          color="primary"
+          sx={isActive("div")}
           baseClassName="material-symbols-sharp"
           onClick={() => setActiveElement("div")}
         >
@@ -23,6 +42,7 @@ export default function PickElement(props) {
         </Icon>
 
         <Icon
+          sx={isActive("p")}
           onClick={() => setActiveElement("p")}
           baseClassName="material-symbols-sharp"
         >

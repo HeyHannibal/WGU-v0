@@ -1,5 +1,6 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { Icon } from "@mui/material";
 import "../style/input.css";
 
 export default function Input(props) {
@@ -18,11 +19,18 @@ export default function Input(props) {
 
     const icons = {
       delete: (ref) => (
-        <span className="material-symbols-sharp" onClick={() => deleteNodeFromState(ref)}>
-          add_circle
-        </span>
+        <Icon
+          baseClassName="material-symbols-sharp"
+          onClick={() => deleteNodeFromState(ref)}
+        >
+          remove
+        </Icon>
       ),
-      add: (ref) => <AddCircleOutlineOutlinedIcon onClick={() => addNodeToState(ref)} />,
+      add: (ref) => (
+        <Icon baseClassName="material-symbols-sharp" onClick={() => addNodeToState(ref)}>
+          add
+        </Icon>
+      ),
     };
 
     return (
